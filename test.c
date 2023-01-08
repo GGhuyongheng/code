@@ -35,6 +35,7 @@ int push(hash_ptr x) {
     else {
         int p = 0;
     }
+    return 0;
 }
 
 int main(void) {
