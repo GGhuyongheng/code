@@ -28,13 +28,14 @@ int push(hash_ptr x) {
         int p = heapSize, s;
         while (p > 1) {
             s = p >> 1;
-            if (comp(heap + s, heap + p)) return;
+            if (comp(heap + s, heap + p)) return 0;
             p = s;
         } 
     }
     else {
         int p = 0;
     }
+    return 0;
 }
 
 int main(void) {
