@@ -33,7 +33,7 @@ int push(hash_ptr x) {
         } 
     }
     else {
-        int p = 0;
+        int p = 10;
     }
     return 0;
 }
