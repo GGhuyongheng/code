@@ -6,6 +6,7 @@
 #include <string.h>
 #include <malloc.h>
 #include <stdbool.h>
+#include "uthash.h"
 
 
 int maxSumOfSubset(int arr[], int arrSize);

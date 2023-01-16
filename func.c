@@ -258,3 +258,102 @@ void test239() {
     for(int i = 0; i < 9; i++)
         printf("%d ", result[i]);
 }
+
+//leetcode347 前K个高频元素，小顶堆
+struct hash_table {
+    int key;
+    int val;
+    UT_hash_handle hh;
+};
+
+typedef struct hash_table* hash_ptr;
+
+struct pair {
+    int first;
+    int second;
+};
+struct pair* heap;
+int heapSize;
+int k;
+
+void swap(struct pair *a, struct pair *b) {
+    struct pair t = *a;
+    *a = *b;
+    *b = t;
+}
+
+bool comp(struct pair* a, struct pair* b) {
+    return a->second < b->second;
+}
+
+void pushHeap(hash_ptr x) {
+    heap[++heapSize].first = x->key;
+    heap[heapSize].second = x->val;
+    int p = heapSize, s;
+    while (p > 1) {
+        s = p >> 1;
+        if (comp(heap + s, heap + p)) break;
+        swap(heap + s, heap + p);
+        p = s;
+    }
+}
+
+struct pair topHeap()
+{
+    return heap[1];
+};
+
+void popHeapHeapHeap() {
+    heap[1] = heap[heapSize--];
+    int p = 1, s;
+    while ((p << 1) <= heapSize) {
+        s = p << 1;
+        if (comp(&heap[s + 1], &heap[s])) s++;
+        if (comp(&heap[p], &heap[s])) break;
+        swap(heap + p, heap + s);
+        p = s;
+    }
+}
+
+void test347() {
+    int nums[6] = {1, 1, 1, 2, 2, 3};
+    k = 2;
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    hash_ptr head = NULL;
+    hash_ptr p = NULL, tmp = NULL;
+    for (int i = 0; i < numsSize; i++) {
+        HASH_FIND_INT(head, &nums[i], p);
+        if (p == NULL) {
+            p = (hash_ptr)malloc(sizeof(struct hash_table));
+            p->key = nums[i];
+            p->val = 1;
+            HASH_ADD_INT(head, key, p);
+        }
+        else {
+            p->val++;
+        }
+    }
+    heap = malloc(sizeof(struct pair) * k);
+    heapSize = 0;
+
+    HASH_ITER(hh, head, p, tmp) {
+        if (heapSize == k) {
+            struct pair tmp = topHeap();
+            if (p->val > tmp.second) {
+                popHeapHeapHeap();
+                pushHeap(p);
+            }
+        }
+        else {
+            pushHeap(p);
+        }
+    }
+
+    int *ret = (int *)malloc(sizeof(int) * k);
+    for (int i = 0; i < k; i++) {
+        struct pair tmp = topHeap();
+        popHeapHeapHeap();
+        ret[i] = tmp.first;
+        printf("%d ", ret[i]);
+    }
+}
